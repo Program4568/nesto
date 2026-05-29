@@ -90,30 +90,61 @@ color:#c8bfff;
 
 <h1>Social Dilemma</h1>
 
+<!-- ZADATAK 1 -->
 <div class="section">
 <div class="section-title">Zadatak 1 — Umna mapa</div>
 <canvas id="mindmap"></canvas>
 </div>
 
+<!-- ZADATAK 2 -->
+<div class="section">
+<div class="section-title">Zadatak 2 — Ciljevi društvenih mreža</div>
+
+<div class="cards">
+
+<div class="card">
+<h3>Engagement</h3>
+<p>Cilj je zadržati korisnika što dulje na platformi.</p>
+</div>
+
+<div class="card">
+<h3>Growth</h3>
+<p>Povećanje broja korisnika i povezanosti.</p>
+</div>
+
+<div class="card">
+<h3>Advertising</h3>
+<p>Prihod od ciljanih oglasa temeljenih na podacima.</p>
+</div>
+
+</div>
+
+<div class="quote">
+"If you're not paying for the product, you are the product."
+</div>
+</div>
+
+<!-- ZADATAK 3 -->
+<div class="section">
+<div class="section-title">Zadatak 3 — Kako funkcioniraju društvene mreže</div>
+
+<div class="cards">
+
+<div class="card"><h3>👍 Like</h3><p>Dopamin i navika korištenja.</p></div>
+<div class="card"><h3>🏷️ Tag</h3><p>Notifikacije vraćaju korisnika.</p></div>
+<div class="card"><h3>💬 Typing</h3><p>Iščekivanje poruke.</p></div>
+<div class="card"><h3>🧠 Design</h3><p>Beskonačni scroll i autoplay.</p></div>
+<div class="card"><h3>😡 Emocije</h3><p>Emocionalni sadržaj se najviše širi.</p></div>
+<div class="card"><h3>🔍 Tracking</h3><p>Praćenje ponašanja korisnika.</p></div>
+<div class="card"><h3>🧒 Mladi</h3><p>Najosjetljiviji na društvene mreže.</p></div>
+<div class="card"><h3>🤖 AI</h3><p>Algoritmi optimiziraju sadržaj.</p></div>
+
+</div>
+</div>
+
 <script>
 const canvas = document.getElementById("mindmap");
 const ctx = canvas.getContext("2d");
-
-function resize(){
-const dpr = window.devicePixelRatio || 1;
-
-canvas.width = window.innerWidth * dpr;
-canvas.height = 500 * dpr;
-
-canvas.style.width = window.innerWidth + "px";
-canvas.style.height = "500px";
-
-ctx.setTransform(dpr,0,0,dpr,0,0);
-
-draw();
-}
-
-window.addEventListener("resize", resize);
 
 const branches = [
 {title:"ADDICTION",color:"#a78bfa",bg:"#1a0f2e"},
@@ -124,7 +155,6 @@ const branches = [
 {title:"ENGAGEMENT",color:"#fcd34d",bg:"#1a1400"}
 ];
 
-// fallback rounded box (radi svugdje)
 function box(x,y,text,color,bg){
 ctx.font="bold 16px Arial";
 
@@ -162,7 +192,7 @@ ctx.fillText(text,x,y);
 function draw(){
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
-const cx = canvas.width/ (window.devicePixelRatio || 1) / 2;
+const cx = canvas.width / (window.devicePixelRatio || 1) / 2;
 const cy = 250;
 
 const radius = 150;
@@ -198,6 +228,21 @@ box(bx,by,b.title,b.color,b.bg);
 });
 }
 
+function resize(){
+const dpr = window.devicePixelRatio || 1;
+
+canvas.width = window.innerWidth * dpr;
+canvas.height = 500 * dpr;
+
+canvas.style.width = window.innerWidth + "px";
+canvas.style.height = "500px";
+
+ctx.setTransform(dpr,0,0,dpr,0,0);
+
+draw();
+}
+
+window.addEventListener("resize", resize);
 resize();
 </script>
 
