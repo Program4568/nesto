@@ -6,11 +6,7 @@
 <title>Social Dilemma</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
 font-family:Georgia, serif;
@@ -22,25 +18,23 @@ padding:20px;
 h1{
 text-align:center;
 font-size:40px;
-margin-bottom:25px;
+margin-bottom:20px;
 color:#e8e0ff;
 }
 
-.section{
-margin-bottom:40px;
-}
+.section{margin-bottom:40px;}
 
 .section-title{
 font-size:13px;
 text-transform:uppercase;
 letter-spacing:2px;
 color:#aaa;
-margin-bottom:12px;
+margin-bottom:10px;
 border-bottom:1px solid #222;
 padding-bottom:6px;
 }
 
-#mindmap{
+canvas{
 width:100%;
 height:500px;
 background:#0a0a17;
@@ -53,6 +47,7 @@ display:block;
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 gap:14px;
+margin-top:10px;
 }
 
 .card{
@@ -62,19 +57,12 @@ border-radius:12px;
 border:1px solid #1e1e3a;
 }
 
-.card h3{
-margin-bottom:6px;
-font-size:17px;
-}
+.card h3{margin-bottom:6px;}
 
-.card p{
-font-size:14px;
-color:#bbb;
-line-height:1.5;
-}
+.card p{font-size:14px;color:#bbb;line-height:1.5;}
 
 .quote{
-margin-top:12px;
+margin-top:10px;
 padding:16px;
 background:#0f0f20;
 border:1px solid #2a2a4a;
@@ -90,7 +78,7 @@ color:#c8bfff;
 
 <h1>Social Dilemma</h1>
 
-<!-- ================= ZADATAK 1 ================= -->
+<!-- ===== ZADATAK 1 ===== -->
 <div class="section">
 <div class="section-title">Zadatak 1 — Umna mapa</div>
 <canvas id="mindmap"></canvas>
@@ -101,7 +89,7 @@ const canvas = document.getElementById("mindmap");
 const ctx = canvas.getContext("2d");
 
 function resize(){
-canvas.width = window.innerWidth;
+canvas.width = window.innerWidth * 0.95;
 canvas.height = 500;
 draw();
 }
@@ -109,24 +97,24 @@ window.addEventListener("resize", resize);
 resize();
 
 const branches = [
-{title:"ADDICTION",color:"#a78bfa",bg:"#1a0f2e"},
-{title:"ALGORITHM",color:"#38bdf8",bg:"#0a1a2e"},
-{title:"DATA",color:"#34d399",bg:"#0a1e14"},
-{title:"BEHAVIOR",color:"#fb923c",bg:"#1e0e04"},
-{title:"MENTAL HEALTH",color:"#f472b6",bg:"#1e0a14"},
-{title:"ENGAGEMENT",color:"#fcd34d",bg:"#1a1400"}
+"ADDICTION",
+"ALGORITHM",
+"DATA",
+"BEHAVIOR",
+"MENTAL HEALTH",
+"ENGAGEMENT"
 ];
 
-function box(x,y,text,color,bg){
+function box(x,y,text,color){
 ctx.font="bold 16px Arial";
 
-const w = ctx.measureText(text).width + 28;
+const w = ctx.measureText(text).width + 30;
 const h = 28;
 
 ctx.beginPath();
 ctx.roundRect(x-w/2,y-h/2,w,h,10);
 
-ctx.fillStyle=bg;
+ctx.fillStyle="#0f0f20";
 ctx.fill();
 
 ctx.strokeStyle=color;
@@ -145,10 +133,10 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 const cx = canvas.width/2;
 const cy = canvas.height/2;
 
-const radius = 150;
+const radius = 160;
 const step = (Math.PI*2)/branches.length;
 
-/* centar */
+/* center */
 ctx.beginPath();
 ctx.arc(cx,cy,55,0,Math.PI*2);
 ctx.fillStyle="#0ea5e9";
@@ -160,46 +148,44 @@ ctx.textAlign="center";
 ctx.textBaseline="middle";
 ctx.fillText("Social Dilemma",cx,cy);
 
-/* grane */
+/* branches */
 branches.forEach((b,i)=>{
-const a = i*step;
+const angle = i*step;
 
-const bx = cx + Math.cos(a)*radius;
-const by = cy + Math.sin(a)*radius;
+const bx = cx + Math.cos(angle)*radius;
+const by = cy + Math.sin(angle)*radius;
 
 ctx.beginPath();
 ctx.moveTo(cx,cy);
 ctx.lineTo(bx,by);
-ctx.strokeStyle=b.color;
+ctx.strokeStyle="#6b7280";
 ctx.lineWidth=2;
 ctx.stroke();
 
-box(bx,by,b.title,b.color,b.bg);
+box(bx,by,b,"#a78bfa");
 });
 }
 </script>
 
-<!-- ================= ZADATAK 2 ================= -->
+<!-- ===== ZADATAK 2 ===== -->
 <div class="section">
 <div class="section-title">Zadatak 2 — Ciljevi društvenih mreža</div>
 
 <div class="cards">
-
 <div class="card">
 <h3>Engagement</h3>
-<p>Cilj je zadržati korisnika što dulje na platformi.</p>
+<p>Zadržavanje korisnika što dulje na platformi.</p>
 </div>
 
 <div class="card">
 <h3>Growth</h3>
-<p>Povećanje broja korisnika i povezanosti.</p>
+<p>Povećanje broja korisnika i mreže.</p>
 </div>
 
 <div class="card">
 <h3>Advertising</h3>
-<p>Prihod od ciljanih oglasa temeljenih na podacima.</p>
+<p>Zarada od ciljanih oglasa.</p>
 </div>
-
 </div>
 
 <div class="quote">
@@ -207,20 +193,20 @@ box(bx,by,b.title,b.color,b.bg);
 </div>
 </div>
 
-<!-- ================= ZADATAK 3 ================= -->
+<!-- ===== ZADATAK 3 ===== -->
 <div class="section">
 <div class="section-title">Zadatak 3 — Kako funkcioniraju društvene mreže</div>
 
 <div class="cards">
 
-<div class="card"><h3>👍 Like</h3><p>Dopamin i navika korištenja.</p></div>
+<div class="card"><h3>👍 Like</h3><p>Dopamin i navika.</p></div>
 <div class="card"><h3>🏷️ Tag</h3><p>Notifikacije vraćaju korisnika.</p></div>
 <div class="card"><h3>💬 Typing</h3><p>Iščekivanje poruke.</p></div>
-<div class="card"><h3>🧠 Design</h3><p>Beskonačni scroll i autoplay.</p></div>
-<div class="card"><h3>😡 Emocije</h3><p>Emocionalni sadržaj se najviše širi.</p></div>
-<div class="card"><h3>🔍 Tracking</h3><p>Praćenje ponašanja korisnika.</p></div>
-<div class="card"><h3>🧒 Mladi</h3><p>Najosjetljiviji na društvene mreže.</p></div>
-<div class="card"><h3>🤖 AI</h3><p>Algoritmi optimiziraju sadržaj.</p></div>
+<div class="card"><h3>🧠 Design</h3><p>Beskonačni scroll.</p></div>
+<div class="card"><h3>😡 Emocije</h3><p>Najviše se širi ekstreman sadržaj.</p></div>
+<div class="card"><h3>🔍 Tracking</h3><p>Praćenje ponašanja.</p></div>
+<div class="card"><h3>🧒 Mladi</h3><p>Osjetljiva skupina.</p></div>
+<div class="card"><h3>🤖 AI</h3><p>Algoritmi optimiziraju feed.</p></div>
 
 </div>
 </div>
