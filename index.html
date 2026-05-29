@@ -21,63 +21,64 @@ padding:20px;
 
 h1{
 text-align:center;
-font-size:42px;
-margin-bottom:30px;
+font-size:40px;
+margin-bottom:25px;
 color:#e8e0ff;
 }
 
 .section{
-margin-bottom:50px;
+margin-bottom:40px;
 }
 
 .section-title{
-font-size:14px;
-letter-spacing:2px;
+font-size:13px;
 text-transform:uppercase;
+letter-spacing:2px;
 color:#aaa;
-margin-bottom:15px;
+margin-bottom:12px;
 border-bottom:1px solid #222;
-padding-bottom:8px;
+padding-bottom:6px;
 }
 
 #mindmap{
 width:100%;
-max-height:600px;
+height:500px;
 background:#0a0a17;
-border-radius:20px;
+border-radius:16px;
 border:1px solid #1e1e3a;
 display:block;
 }
 
 .cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:16px;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:14px;
 }
 
 .card{
 background:#0f0f20;
-padding:18px;
+padding:16px;
 border-radius:12px;
 border:1px solid #1e1e3a;
 }
 
 .card h3{
-margin-bottom:8px;
+margin-bottom:6px;
+font-size:17px;
 }
 
 .card p{
 font-size:14px;
-line-height:1.6;
 color:#bbb;
+line-height:1.5;
 }
 
 .quote{
-margin-top:15px;
-padding:18px;
-border-radius:12px;
+margin-top:12px;
+padding:16px;
 background:#0f0f20;
 border:1px solid #2a2a4a;
+border-radius:12px;
 text-align:center;
 font-style:italic;
 color:#c8bfff;
@@ -99,18 +100,13 @@ color:#c8bfff;
 const canvas = document.getElementById("mindmap");
 const ctx = canvas.getContext("2d");
 
-/* 🔥 RESPONSIVE CANVAS (BITNO ZA GITHUB) */
-function resizeCanvas(){
-canvas.width = window.innerWidth * 2;
-canvas.height = 900;
+function resize(){
+canvas.width = window.innerWidth;
+canvas.height = 500;
 draw();
 }
-
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
-
-function cx(){ return canvas.width / 4; }
-function cy(){ return canvas.height / 4; }
+window.addEventListener("resize", resize);
+resize();
 
 const branches = [
 {title:"ADDICTION",color:"#a78bfa",bg:"#1a0f2e"},
@@ -121,11 +117,11 @@ const branches = [
 {title:"ENGAGEMENT",color:"#fcd34d",bg:"#1a1400"}
 ];
 
-function box(x,y,t,c,bg){
-ctx.font="bold 18px Arial";
+function box(x,y,text,color,bg){
+ctx.font="bold 16px Arial";
 
-const w = ctx.measureText(t).width + 40;
-const h = 34;
+const w = ctx.measureText(text).width + 28;
+const h = 28;
 
 ctx.beginPath();
 ctx.roundRect(x-w/2,y-h/2,w,h,10);
@@ -133,52 +129,46 @@ ctx.roundRect(x-w/2,y-h/2,w,h,10);
 ctx.fillStyle=bg;
 ctx.fill();
 
-ctx.strokeStyle=c;
+ctx.strokeStyle=color;
+ctx.lineWidth=2;
 ctx.stroke();
 
-ctx.fillStyle=c;
+ctx.fillStyle=color;
 ctx.textAlign="center";
 ctx.textBaseline="middle";
-ctx.fillText(t,x,y);
-}
-
-function center(){
-const x = cx(), y = cy();
-
-ctx.beginPath();
-ctx.arc(x,y,70,0,Math.PI*2);
-
-const g = ctx.createRadialGradient(x,y,10,x,y,70);
-g.addColorStop(0,"#4f46e5");
-g.addColorStop(1,"#0ea5e9");
-
-ctx.fillStyle=g;
-ctx.fill();
-
-ctx.fillStyle="white";
-ctx.font="bold 18px Georgia";
-ctx.textAlign="center";
-ctx.textBaseline="middle";
-ctx.fillText("Social Dilemma",x,y);
+ctx.fillText(text,x,y);
 }
 
 function draw(){
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
-const x = cx();
-const y = cy();
+const cx = canvas.width/2;
+const cy = canvas.height/2;
 
-const radius = 220;
+const radius = 150;
 const step = (Math.PI*2)/branches.length;
 
-branches.forEach((b,i)=>{
-const a=i*step;
+/* centar */
+ctx.beginPath();
+ctx.arc(cx,cy,55,0,Math.PI*2);
+ctx.fillStyle="#0ea5e9";
+ctx.fill();
 
-const bx = x + Math.cos(a)*radius;
-const by = y + Math.sin(a)*radius;
+ctx.fillStyle="white";
+ctx.font="bold 14px Arial";
+ctx.textAlign="center";
+ctx.textBaseline="middle";
+ctx.fillText("Social Dilemma",cx,cy);
+
+/* grane */
+branches.forEach((b,i)=>{
+const a = i*step;
+
+const bx = cx + Math.cos(a)*radius;
+const by = cy + Math.sin(a)*radius;
 
 ctx.beginPath();
-ctx.moveTo(x,y);
+ctx.moveTo(cx,cy);
 ctx.lineTo(bx,by);
 ctx.strokeStyle=b.color;
 ctx.lineWidth=2;
@@ -186,8 +176,6 @@ ctx.stroke();
 
 box(bx,by,b.title,b.color,b.bg);
 });
-
-center();
 }
 </script>
 
@@ -196,20 +184,22 @@ center();
 <div class="section-title">Zadatak 2 — Ciljevi društvenih mreža</div>
 
 <div class="cards">
+
 <div class="card">
 <h3>Engagement</h3>
-<p>Zadržavanje korisnika što dulje na platformi.</p>
+<p>Cilj je zadržati korisnika što dulje na platformi.</p>
 </div>
 
 <div class="card">
 <h3>Growth</h3>
-<p>Povećanje broja korisnika i njihove povezanosti.</p>
+<p>Povećanje broja korisnika i povezanosti.</p>
 </div>
 
 <div class="card">
 <h3>Advertising</h3>
 <p>Prihod od ciljanih oglasa temeljenih na podacima.</p>
 </div>
+
 </div>
 
 <div class="quote">
@@ -228,8 +218,8 @@ center();
 <div class="card"><h3>💬 Typing</h3><p>Iščekivanje poruke.</p></div>
 <div class="card"><h3>🧠 Design</h3><p>Beskonačni scroll i autoplay.</p></div>
 <div class="card"><h3>😡 Emocije</h3><p>Emocionalni sadržaj se najviše širi.</p></div>
-<div class="card"><h3>🔍 Tracking</h3><p>Praćenje korisničkog ponašanja.</p></div>
-<div class="card"><h3>🧒 Mladi</h3><p>Najosjetljivija skupina.</p></div>
+<div class="card"><h3>🔍 Tracking</h3><p>Praćenje ponašanja korisnika.</p></div>
+<div class="card"><h3>🧒 Mladi</h3><p>Najosjetljiviji na društvene mreže.</p></div>
 <div class="card"><h3>🤖 AI</h3><p>Algoritmi optimiziraju sadržaj.</p></div>
 
 </div>
