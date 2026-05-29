@@ -1,41 +1,159 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Dilemma</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Georgia, serif;
+background:radial-gradient(circle at top,#111827 0%,#050816 70%);
+color:#eee;
+padding:20px;
+}
+
+h1{
+text-align:center;
+font-size:40px;
+margin-bottom:25px;
+color:#e8e0ff;
+}
+
+.section{
+margin-bottom:40px;
+}
+
+.section-title{
+font-size:13px;
+text-transform:uppercase;
+letter-spacing:2px;
+color:#aaa;
+margin-bottom:12px;
+border-bottom:1px solid #222;
+padding-bottom:6px;
+}
+
+#mindmap{
+width:100%;
+height:500px;
+background:#0a0a17;
+border-radius:16px;
+border:1px solid #1e1e3a;
+display:block;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:14px;
+}
+
+.card{
+background:#0f0f20;
+padding:16px;
+border-radius:12px;
+border:1px solid #1e1e3a;
+}
+
+.card h3{
+margin-bottom:6px;
+font-size:17px;
+}
+
+.card p{
+font-size:14px;
+color:#bbb;
+line-height:1.5;
+}
+
+.quote{
+margin-top:12px;
+padding:16px;
+background:#0f0f20;
+border:1px solid #2a2a4a;
+border-radius:12px;
+text-align:center;
+font-style:italic;
+color:#c8bfff;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Social Dilemma</h1>
+
+<div class="section">
+<div class="section-title">Zadatak 1 — Umna mapa</div>
+<canvas id="mindmap"></canvas>
+</div>
+
 <script>
 const canvas = document.getElementById("mindmap");
 const ctx = canvas.getContext("2d");
 
 function resize(){
-canvas.width = window.innerWidth * 0.95;
-canvas.height = 500;
+const dpr = window.devicePixelRatio || 1;
+
+canvas.width = window.innerWidth * dpr;
+canvas.height = 500 * dpr;
+
+canvas.style.width = window.innerWidth + "px";
+canvas.style.height = "500px";
+
+ctx.setTransform(dpr,0,0,dpr,0,0);
+
 draw();
 }
+
 window.addEventListener("resize", resize);
-resize();
 
 const branches = [
-"ADDICTION",
-"ALGORITHM",
-"DATA",
-"BEHAVIOR",
-"MENTAL HEALTH",
-"ENGAGEMENT"
+{title:"ADDICTION",color:"#a78bfa",bg:"#1a0f2e"},
+{title:"ALGORITHM",color:"#38bdf8",bg:"#0a1a2e"},
+{title:"DATA",color:"#34d399",bg:"#0a1e14"},
+{title:"BEHAVIOR",color:"#fb923c",bg:"#1e0e04"},
+{title:"MENTAL HEALTH",color:"#f472b6",bg:"#1e0a14"},
+{title:"ENGAGEMENT",color:"#fcd34d",bg:"#1a1400"}
 ];
 
-function box(x,y,text){
+// fallback rounded box (radi svugdje)
+function box(x,y,text,color,bg){
 ctx.font="bold 16px Arial";
 
-const w = ctx.measureText(text).width + 30;
+const w = ctx.measureText(text).width + 28;
 const h = 28;
 
-ctx.beginPath();
-ctx.rect(x-w/2, y-h/2, w, h);
+const rx = x - w/2;
+const ry = y - h/2;
 
-ctx.fillStyle="#0f0f20";
+ctx.beginPath();
+ctx.moveTo(rx+10, ry);
+ctx.lineTo(rx+w-10, ry);
+ctx.quadraticCurveTo(rx+w, ry, rx+w, ry+10);
+ctx.lineTo(rx+w, ry+h-10);
+ctx.quadraticCurveTo(rx+w, ry+h, rx+w-10, ry+h);
+ctx.lineTo(rx+10, ry+h);
+ctx.quadraticCurveTo(rx, ry+h, rx, ry+h-10);
+ctx.lineTo(rx, ry+10);
+ctx.quadraticCurveTo(rx, ry, rx+10, ry);
+ctx.closePath();
+
+ctx.fillStyle=bg;
 ctx.fill();
 
-ctx.strokeStyle="#a78bfa";
+ctx.strokeStyle=color;
 ctx.lineWidth=2;
 ctx.stroke();
 
-ctx.fillStyle="#a78bfa";
+ctx.fillStyle=color;
 ctx.textAlign="center";
 ctx.textBaseline="middle";
 ctx.fillText(text,x,y);
@@ -44,13 +162,13 @@ ctx.fillText(text,x,y);
 function draw(){
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
-const cx = canvas.width/2;
-const cy = canvas.height/2;
+const cx = canvas.width/ (window.devicePixelRatio || 1) / 2;
+const cy = 250;
 
-const radius = 160;
+const radius = 150;
 const step = (Math.PI*2)/branches.length;
 
-/* CENTER */
+// center
 ctx.beginPath();
 ctx.arc(cx,cy,55,0,Math.PI*2);
 ctx.fillStyle="#0ea5e9";
@@ -62,21 +180,26 @@ ctx.textAlign="center";
 ctx.textBaseline="middle";
 ctx.fillText("Social Dilemma",cx,cy);
 
-/* BRANCHES */
+// branches
 branches.forEach((b,i)=>{
-const angle = i*step;
+const a = i*step;
 
-const bx = cx + Math.cos(angle)*radius;
-const by = cy + Math.sin(angle)*radius;
+const bx = cx + Math.cos(a)*radius;
+const by = cy + Math.sin(a)*radius;
 
 ctx.beginPath();
 ctx.moveTo(cx,cy);
 ctx.lineTo(bx,by);
-ctx.strokeStyle="#6b7280";
+ctx.strokeStyle=b.color;
 ctx.lineWidth=2;
 ctx.stroke();
 
-box(bx,by,b);
+box(bx,by,b.title,b.color,b.bg);
 });
 }
+
+resize();
 </script>
+
+</body>
+</html>
